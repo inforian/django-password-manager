@@ -24,13 +24,14 @@ def validate_password_history(obj):
 
     """
     model = obj.__class__
-    pass_objects = model.objects.filter(pk=obj.id)
+    pass_objects = model.objects.filter(user=obj.user)
 
     # validate Password History Count
     if pass_objects.count() < getattr(settings, 'PASSWORD_HISTORY_LIFE'):
         return
     else:
-        oldest_object = pass_objects.order_by('pk')[:1]  # get oldest Password object
+        # import ipdb;ipdb.set_trace()
+        oldest_object = pass_objects.first()  # get oldest Password object
         oldest_object.delete()  # Delete Password object.
         return
 
@@ -67,8 +68,9 @@ class PasswordHistory(models.Model):
         """
 
         """
-        # validate Password History
-        validate_password_history(self)
+        if self.pk is None: # validate only for new objects
+            # validate Password History
+            validate_password_history(self)
 
 
 class PasswordExpiry(models.Model):
