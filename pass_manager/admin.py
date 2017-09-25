@@ -20,14 +20,4 @@ class PasswordHistoryAdmin(admin.ModelAdmin):
     list_per_page = 20
     ordering = ('-id', )
 
-
-class PasswordExpiryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'expiry', )
-    list_display_links = ('id', 'expiry', )
-    search_fields = ('user', )
-    raw_id_fields = ('user', )
-    list_per_page = 20
-    ordering = ('-id', )
-
 admin.site.register(models.PasswordHistory, PasswordHistoryAdmin)
-admin.site.register(models.PasswordExpiry, PasswordExpiryAdmin)

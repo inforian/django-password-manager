@@ -124,12 +124,13 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # Password Manager Settings
+STORE_PASSWORD_HISTORY = True
 PASSWORD_HISTORY_LIFE = 5  # counts (Store user last 5 passwords)
 PASSWORD_EXPIRY_TIME = 5  # in days
+ACCOUNT_PASSWORD_CHANGE_REDIRECT_URL = None
+ACCOUNT_LOGOUT_URL = None
 
-
-from config.local_settings import *
 try:
-    pass
+    from config.local_settings import *
 except:
     pass

@@ -30,7 +30,6 @@ def validate_password_history(obj):
     if pass_objects.count() < getattr(settings, 'PASSWORD_HISTORY_LIFE'):
         return
     else:
-        # import ipdb;ipdb.set_trace()
         oldest_object = pass_objects.first()  # get oldest Password object
         oldest_object.delete()  # Delete Password object.
         return
@@ -71,27 +70,3 @@ class PasswordHistory(models.Model):
         if self.pk is None: # validate only for new objects
             # validate Password History
             validate_password_history(self)
-
-
-class PasswordExpiry(models.Model):
-    """Holds the password expiration period for a single user.
-
-        - Password Expiry time depend on `PASSWORD_EXPIRY_TIME` setting.
-    """
-    user = models.OneToOneField(User,
-                                related_name="password_expiry",
-                                verbose_name=_("user"),
-                                on_delete=models.CASCADE)
-    expiry = models.PositiveIntegerField(
-        _('Password expiry in days'),
-        default=0)
-
-    class Meta:
-        verbose_name = _('User Password Expiry')
-        verbose_name_plural = _('User Passwords Expiry')
-
-    def __str__(self):
-        return '<{user}>: {expiry}'.format(
-            user=self.user,
-            expiry=self.expiry,
-        )
