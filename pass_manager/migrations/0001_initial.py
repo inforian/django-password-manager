@@ -18,15 +18,16 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='PasswordExpiry',
+            name='PasswordHistory',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('expiry', models.PositiveIntegerField(default=0, verbose_name='Password expiry in days')),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='password_expiry', to=settings.AUTH_USER_MODEL, verbose_name='user')),
+                ('password', models.CharField(max_length=255, verbose_name='Password')),
+                ('timestamp', models.DateTimeField(default=django.utils.timezone.now, verbose_name='Password creation Timestamp.')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='password_history', to=settings.AUTH_USER_MODEL)),
             ],
             options={
-                'verbose_name_plural': 'User Passwords Expiry',
-                'verbose_name': 'User Password Expiry',
+                'verbose_name_plural': 'User Passwords History',
+                'verbose_name': 'User Password History',
             },
         ),
     ]
