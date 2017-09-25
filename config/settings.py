@@ -122,3 +122,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Password Manager Settings
+PASSWORD_HISTORY_LIFE = 5  # counts (Store user last 5 passwords)
+PASSWORD_EXPIRY_TIME = 5  # in days
+
+
+from config.local_settings import *
+try:
+    pass
+except:
+    pass
