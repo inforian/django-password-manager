@@ -42,7 +42,7 @@ def check_password_expired(user):
 
     try:
         # get latest password info
-        latest = user.password_history.latest("timestamp")
+        latest = user.password_history.latest("pk")
     except PasswordHistory.DoesNotExist:
         return False
 

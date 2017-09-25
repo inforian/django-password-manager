@@ -30,10 +30,7 @@ class ExpiredPasswordMiddleware(MiddlewareMixin):
         """
 
         """
-        print ('in middlware')
-        if utils.is_authenticated(request.user):
-            print('in middlware 111')
-
+        if utils.is_authenticated(request.user) and not request.user.is_staff:
             next_url = utils.resolve(request.path).url_name
             # Authenticated users must be allowed to access
             # "change password" page and "log out" page.
