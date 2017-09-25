@@ -19,7 +19,7 @@ except ImportError:
     from django.urls import resolve, reverse, NoReverseMatch
 
 from django.conf import settings
-
+from django.contrib.auth.hashers import make_password
 from pass_manager.models import PasswordHistory
 
 
@@ -53,3 +53,16 @@ def check_password_expired(user):
         return True
     else:
         return False
+
+
+def create_password_history(password, user):
+    """
+
+    :param password: plaintext password
+    :param user: user object
+    """
+    if settings.STORE_PASSWORD_HISTORY:
+        PasswordHistory.objects.create(
+            user=user,
+            password=make_password(password)
+        )
