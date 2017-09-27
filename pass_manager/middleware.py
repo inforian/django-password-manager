@@ -30,6 +30,8 @@ class ExpiredPasswordMiddleware(MiddlewareMixin):
         """
 
         """
+        print("111")
+        # import ipdb;ipdb.set_trace()
         if utils.is_authenticated(request.user) and not request.user.is_staff:
             next_url = utils.resolve(request.path).url_name
             # Authenticated users must be allowed to access
