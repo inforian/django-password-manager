@@ -26,7 +26,6 @@ def validate_password_history(obj):
     model = obj.__class__
     pass_objects = model.objects.filter(user=obj.user)
 
-    # validate Password History Count
     if pass_objects.count() < getattr(settings, 'PASSWORD_HISTORY_LIFE'):
         return
     else:
@@ -63,10 +62,14 @@ class PasswordHistory(models.Model):
             timestamp=self.timestamp,
         )
 
-    def clean(self):
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
         """
 
         """
         if self.pk is None: # validate only for new objects
             # validate Password History
             validate_password_history(self)
+        return super(PasswordHistory, self).save(force_insert=False, force_update=False, using=None,
+             update_fields=None)
+

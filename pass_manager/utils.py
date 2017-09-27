@@ -16,7 +16,8 @@ import django
 
 from django.conf import settings
 from django.http import QueryDict
-from django.contrib.auth.hashers import make_password
+from django.core.exceptions import ValidationError
+from django.contrib.auth.hashers import make_password, check_password
 from pass_manager.models import PasswordHistory
 
 try:
@@ -86,13 +87,21 @@ def check_password_expired(user):
         return False
 
 
-def create_password_history(password, user):
+def validate_and_create_password_history(password, user):
     """
+        - Validate user new password must not be as same as he have already used in Past (the history be storing)
 
     :param password: plaintext password
     :param user: user object
     """
     if settings.STORE_PASSWORD_HISTORY:
+        # validate password history
+
+        for item in PasswordHistory.objects.filter(user=user):
+            if check_password(password, item.password):
+                raise ValidationError({'detail': 'cannot use any one of your last {0} passwords'.
+                                      format(settings.PASSWORD_HISTORY_LIFE)})
+
         PasswordHistory.objects.create(
             user=user,
             password=make_password(password)
