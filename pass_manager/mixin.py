@@ -26,7 +26,6 @@ class ExpiredPassworMixin(object):
 
     def initial(self, request, *args, **kwargs):
         print("111")
-        # import ipdb;ipdb.set_trace()
         if utils.is_authenticated(request.user) and not request.user.is_staff:
             next_url = utils.resolve(request.path).url_name
             # Authenticated users must be allowed to access
@@ -36,7 +35,7 @@ class ExpiredPassworMixin(object):
                                 settings.ACCOUNT_LOGOUT_URL,
                                 ]:
                 print('in middlware 222')
-
+                # import ipdb;ipdb.set_trace()
                 if utils.check_password_expired(request.user):
                     print('in middlware 333')
 
@@ -45,15 +44,14 @@ class ExpiredPassworMixin(object):
                     querystring = QueryDict(url_bits[4], mutable=True)
                     url_bits[4] = querystring.urlencode(safe="/")
 
-                    # return Response({'detail': urlunparse(url_bits)},
-                    #                 status=status.HTTP_307_TEMPORARY_REDIRECT)
-                    self.finalize_response(request, url_bits)
+                    return Response({'detail': urlunparse(url_bits)},
+                                    status=status.HTTP_307_TEMPORARY_REDIRECT)
+                    # self.finalized_response(request, url_bits)
 
-    def finalize_response(self, request, response, *args, **kwargs):
+    def finalizeddd_response(self, request, response, *args, **kwargs):
         """
 
         """
-        # import ipdb;ipdb.set_trace()
 
         return Response({'detail': urlunparse(response)},
                         status=status.HTTP_307_TEMPORARY_REDIRECT)
