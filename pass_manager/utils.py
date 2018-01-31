@@ -77,7 +77,7 @@ def check_password_expired(user):
         # get latest password info
         latest = user.password_history.latest("pk")
     except PasswordHistory.DoesNotExist:
-        return False
+        return True
 
     now = datetime.now(tz=pytz.UTC)
     expiration = latest.timestamp + timedelta(days=expiry)
