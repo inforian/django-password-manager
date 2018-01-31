@@ -15,9 +15,10 @@ try:
 except ImportError:  # MiddlewareMixin is depreciated so catch this exception
     MiddlewareMixin = object
 
-from django.conf import settings
 from django.http import HttpResponseRedirect, QueryDict
 from pass_manager import utils
+
+from . import settings
 
 
 class ExpiredPasswordMiddleware(MiddlewareMixin):
@@ -26,25 +27,17 @@ class ExpiredPasswordMiddleware(MiddlewareMixin):
     Also we will store user Password to maintain the history of his passwords as per `PASSWORD_HISTORY_LIFE`.
     So that we can check that user cannot use same Password as he had used in Past.
     """
-    def process_request(self, request):
-        """
 
-        """
-        print("111")
-        # import ipdb;ipdb.set_trace()
+    def process_request(self, request):
         if utils.is_authenticated(request.user) and not request.user.is_staff:
             next_url = utils.resolve(request.path).url_name
             # Authenticated users must be allowed to access
             # "change password" page and "log out" page.
             # even if password is expired.
             if next_url not in [settings.ACCOUNT_PASSWORD_CHANGE_REDIRECT_URL,
-                                settings.ACCOUNT_LOGOUT_URL,
-                                ]:
-                print('in middlware 222')
+                                settings.ACCOUNT_LOGOUT_URL]:
 
                 if utils.check_password_expired(request.user):
-                    print('in middlware 333')
-
                     change_password_url = utils.reverse(settings.ACCOUNT_PASSWORD_CHANGE_REDIRECT_URL)
                     url_bits = list(urlparse(change_password_url))
                     querystring = QueryDict(url_bits[4], mutable=True)

@@ -14,11 +14,12 @@ from datetime import datetime, timedelta
 # Django
 import django
 
-from django.conf import settings
 from django.http import QueryDict
 from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import make_password, check_password
 from pass_manager.models import PasswordHistory
+
+from . import settings
 
 try:
     from django.core.urlresolvers import resolve, reverse, NoReverseMatch
