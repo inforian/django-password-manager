@@ -12,6 +12,7 @@ from django.db import models
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
+from .settings import PASSWORD_HISTORY_LIFE
 
 User = settings.AUTH_USER_MODEL
 
@@ -26,7 +27,7 @@ def validate_password_history(obj):
     model = obj.__class__
     pass_objects = model.objects.filter(user=obj.user)
 
-    if pass_objects.count() < getattr(settings, 'PASSWORD_HISTORY_LIFE'):
+    if pass_objects.count() < PASSWORD_HISTORY_LIFE:
         return
     else:
         oldest_object = pass_objects.first()  # get oldest Password object
