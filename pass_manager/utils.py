@@ -34,13 +34,13 @@ def is_authenticated(user):
         return user.is_authenticated()
 
 
-def expire_middleware_as_function(request):
+def expire_middleware_as_function(request, user):
     """
     In DRF we can't use Django middleware since in DRF Authentication is handled at View layer So we will always get
     Anonymous user if we will use request.user to get current authenticated user, So we can use this function
     to check user password validity.
     """
-    if is_authenticated(request.user) and not request.user.is_staff:
+    if not user.is_staff:
         next_url = resolve(request.path).url_name
         # Authenticated users must be allowed to access
         # "change password" page and "log out" page.
@@ -48,7 +48,7 @@ def expire_middleware_as_function(request):
         if next_url not in [settings.ACCOUNT_PASSWORD_CHANGE_REDIRECT_URL,
                             settings.ACCOUNT_LOGOUT_URL,
                             ]:
-            return check_password_expired(request.user)
+            return check_password_expired(user)
 
 
 def get_pass_reset_url():
