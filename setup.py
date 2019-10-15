@@ -4,7 +4,7 @@ from setuptools import find_packages
 
 setup(
     name='django-password-manager',
-    version='0.1.1',
+    version='0.1.2',
     description='Enable Password Force Reset & Maintain Password History',
     author='Neeraj Dhiman',
     author_email='ndhiman08@gmail.com',
